@@ -15,7 +15,8 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings:DatabaseConnectionString": "Server=144.91.70.139;Database=DatabaseExample;user id=microshif;Password=Neptuno2021;"
       }
     },
     "Docker": {

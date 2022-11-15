@@ -30,10 +30,10 @@ namespace ApiTemplate.Api.Controllers
             .ToArray();
         }
 
-        [HttpGet(Name = "GetWeatherForecastNew")]
+        [HttpDelete(Name = "GetWeatherForecastNew")]
         public IEnumerable<WeatherForecast> GetNew()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            return Enumerable.Range(1, 10).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
