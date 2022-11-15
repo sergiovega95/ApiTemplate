@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: CI-CD Pipeline
 
 on:
   push:
@@ -13,9 +13,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file ApiTemplate.Api/Dockerfile --tag apitemplate:latest
+      - uses: actions/checkout@v3
+      - name: Checkout Code
+      
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+      - name: Build Code
+      - run: dotnet build ApiTemplate.Api/ApiTemplate.Api.csproj    
+      
+      - name: Build the Docker image
+        run: docker build . --file ApiTemplate.Api/Dockerfile --tag apitemplate:latest
     
     
       
