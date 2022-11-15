@@ -14,14 +14,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Checkout Code
-      
+      - name: Setup Dotnet and Build Code
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'
-      - name: Build Code
+          dotnet-version: '6.0.x'      
       - run: dotnet build ApiTemplate.Api/ApiTemplate.Api.csproj    
       
+      - uses: actions/checkout@v3
       - name: Build the Docker image
         run: docker build . --file ApiTemplate.Api/Dockerfile --tag apitemplate:latest
     
