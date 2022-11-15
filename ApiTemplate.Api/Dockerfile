@@ -7,10 +7,12 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["ApiTemplate.Api/ApiTemplate.Api/ApiTemplate.Api.csproj", "ApiTemplate.Api/ApiTemplate.Api/"]
-RUN dotnet restore "ApiTemplate.Api/ApiTemplate.Api/ApiTemplate.Api.csproj"
+COPY ["ApiTemplate.Api/ApiTemplate.Api.csproj", "ApiTemplate.Api/"]
+COPY ["ApiTemplate.Domain/ApiTemplate.Domain.csproj", "ApiTemplate.Domain/"]
+COPY ["ApiTemplate.Infraestructure/ApiTemplate.Infraestructure.csproj", "ApiTemplate.Infraestructure/"]
+RUN dotnet restore "ApiTemplate.Api/ApiTemplate.Api.csproj"
 COPY . .
-WORKDIR "/src/ApiTemplate.Api/ApiTemplate.Api"
+WORKDIR "/src/ApiTemplate.Api"
 RUN dotnet build "ApiTemplate.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
