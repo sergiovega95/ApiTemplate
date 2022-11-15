@@ -15,10 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup Dotnet and Build Code
-      - uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'      
-      - run: dotnet build ApiTemplate.Api/ApiTemplate.Api.csproj    
+          dotnet-version: '6.0.x'  
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build ApiTemplate.Api/ApiTemplate.Api.csproj --configuration Release --no-restore
+      - name: Test
+        run: dotnet test /ApiTemplate.Test/ApiTemplate.Test.csproj --no-restore --verbosity normal       
       
       - uses: actions/checkout@v3
       - name: Build the Docker image
