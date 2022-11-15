@@ -29,7 +29,7 @@ jobs:
 
       - name: Build, tag, and push docker image to Amazon ECR        
         run: |
-          docker build -t 270651056977.dkr.ecr.us-east-1.amazonaws.com/apitemplate:latest .
+          docker build -f ApiTemplate.Api/Dockerfile -t 270651056977.dkr.ecr.us-east-1.amazonaws.com/apitemplate:latest .
           docker push 270651056977.dkr.ecr.us-east-1.amazonaws.com/apitemplate:latest
     
     
