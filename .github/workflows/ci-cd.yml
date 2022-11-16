@@ -21,9 +21,9 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build ApiTemplate.Api/ApiTemplate.Api.csproj --configuration Release --no-restore
+        run: dotnet build Api/Iris.Api/Iris.Api.csproj --configuration Release --no-restore
       - name: Test
-        run: dotnet test ApiTemplate.Test/ApiTemplate.Test.csproj --no-restore
+        run: dotnet test Api/Iris.Test/Iris.Test.csproj --no-restore
       
       - name: Checkout repo
         uses: actions/checkout@v3       
@@ -41,8 +41,8 @@ jobs:
 
       - name: Build, tag, and push docker image to Amazon ECR        
         run: |
-          docker build -f ApiTemplate.Api/Dockerfile -t 270651056977.dkr.ecr.us-east-1.amazonaws.com/apitemplate:latest .
-          docker push 270651056977.dkr.ecr.us-east-1.amazonaws.com/apitemplate:latest
+          docker build -f Api/Iris.Api/Dockerfile -t 270651056977.dkr.ecr.us-east-1.amazonaws.com/irisapi:latest .
+          docker push 270651056977.dkr.ecr.us-east-1.amazonaws.com/irisapi:latest
     
     
       
