@@ -7,12 +7,12 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Iris.Api/Iris.Api.csproj", "Iris.Api/"]
-COPY ["Iris.Domain/Iris.Domain.csproj", "Iris.Domain/"]
-COPY ["Iris.Infraestructure/Iris.Infraestructure.csproj", "Iris.Infraestructure/"]
+COPY ["Api/Iris.Api/Iris.Api.csproj", "Iris.Api/"]
+COPY ["Api/Iris.Domain/Iris.Domain.csproj", "Iris.Domain/"]
+COPY ["Api/Iris.Infraestructure/Iris.Infraestructure.csproj", "Iris.Infraestructure/"]
 RUN dotnet restore "Iris.Api/Iris.Api.csproj"
 COPY . .
-WORKDIR "/src/Iris.Api"
+WORKDIR "/src/Api/Iris.Api"
 RUN dotnet build "Iris.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
