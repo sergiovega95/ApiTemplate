@@ -2,14 +2,17 @@ using ApiTemplate.Infraestructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Serilog.Events;
 using Serilog;
-using Serilog.Sinks.AmazonS3;
 using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ApiTemplate.Domain.DomainServices.Authentication;
-using Microsoft.OpenApi.Models;
+using ApiTemplate.Api.Middlewares;
+using FluentValidation;
+using ApiTemplate.Api.ViewModels.Validations;
+using ApiTemplate.Domain.DTOs.Authentication;
 
+//Create Loggger
 Log.Logger = new LoggerConfiguration()
     .WriteTo.AmazonS3(
         $"logBackend-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}.txt",
@@ -28,41 +31,15 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "My API",
-        Version = "v1"
-    });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please insert JWT with Bearer into field",
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-   {
-     new OpenApiSecurityScheme
-     {
-       Reference = new OpenApiReference
-       {
-         Type = ReferenceType.SecurityScheme,
-         Id = "Bearer"
-       }
-      },
-      new string[] { }
-    }
-  });
-});
+builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnectionString")));
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IValidator<UserDTO>, UserDtoValidator>();
 builder.Host.UseSerilog();
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -83,9 +60,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -99,5 +76,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.Run();
