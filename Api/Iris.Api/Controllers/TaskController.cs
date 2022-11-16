@@ -1,13 +1,9 @@
-﻿using ApiTemplate.Api.Controllers;
-using ApiTemplate.Api.ViewModels;
-using ApiTemplate.Domain.DTOs.Authentication;
+﻿using ApiTemplate.Api.ViewModels;
 using FluentValidation;
 using Iris.Domain.DomainServices.Tasks;
 using Iris.Domain.DTOs.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Iris.Api.Controllers
 {
@@ -17,14 +13,19 @@ namespace Iris.Api.Controllers
     public class TaskController : ControllerBase
     {
         private readonly ILogger<TaskController> _logger;
-        private readonly IValidator<TaskDto> _validator;
+        private readonly IValidator<TaskRequest> _validatorTaskRequest;
+        private readonly IValidator<TaskDto> _validatorTaskDto;
         private readonly ITaskService _taskService;
 
-        public TaskController(ILogger<TaskController> logger, IValidator<TaskDto> validator, ITaskService taskService)
+        public TaskController(ILogger<TaskController> logger, IValidator<TaskRequest> validatorTaskRequest, 
+                               IValidator<TaskDto> validatorTaskDto,
+                                ITaskService taskService)
         {
-            _validator= validator;
+
+            _validatorTaskRequest = validatorTaskRequest;
             _logger= logger;
             _taskService= taskService;
+            _validatorTaskDto= validatorTaskDto;
 
         }
 
@@ -46,7 +47,9 @@ namespace Iris.Api.Controllers
         {
             _logger.LogTrace("Creating a task");
 
-            return Ok(await _taskService.CreateTask());
+            await _validatorTaskRequest.ValidateAndThrowAsync(task);
+
+            return Ok(await _taskService.CreateTask(task));
 
         }
 
@@ -55,9 +58,15 @@ namespace Iris.Api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status400BadRequest, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError, contentType: "application/json")]
-        public async Task Put([FromBody] TaskDto taskUpdated)
+        public async Task<IActionResult> Put([FromBody] TaskDto taskUpdated)
         {
             _logger.LogTrace("Updating a task");
+
+            await _validatorTaskDto.ValidateAndThrowAsync(taskUpdated);
+
+            await _taskService.UpdateTask(taskUpdated);
+
+            return Ok();
 
         }
 
@@ -65,9 +74,13 @@ namespace Iris.Api.Controllers
         [HttpDelete("{id}")]        
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status400BadRequest, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError, contentType: "application/json")]
-        public async Task Delete(int taskId)
+        public async Task<IActionResult> Delete(int id)
         {
             _logger.LogTrace("Deleting a task");
+
+            await _taskService.DeleteTask(id);
+
+            return Ok();
         }
     }
 }

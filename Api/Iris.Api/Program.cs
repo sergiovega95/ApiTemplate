@@ -13,6 +13,9 @@ using ApiTemplate.Api.ViewModels.Validations;
 using ApiTemplate.Domain.DTOs.Authentication;
 using ApiTemplate.Domain.Interfaces;
 using ApiTemplate.Infraestructure.Repositories;
+using Iris.Api.ViewModels.Validations;
+using Iris.Domain.DTOs.Tasks;
+using Iris.Domain.DomainServices.Tasks;
 
 //Create Loggger and store in amazon S3
 Log.Logger = new LoggerConfiguration()
@@ -43,6 +46,10 @@ builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IValidator<UserDTO>, UserDtoValidator>();
+builder.Services.AddScoped<IValidator<TaskDto>, TaskDtoValidator>();
+builder.Services.AddScoped<IValidator<TaskRequest>, TaskRequestValidator>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+
 builder.Host.UseSerilog();
 builder.Services.AddAuthentication(options =>
 {

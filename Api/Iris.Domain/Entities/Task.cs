@@ -23,7 +23,6 @@ namespace Iris.Domain.Entities
         public DateTime DateCreated { get; set; }
                 
         [Column("DateModified")]
-        [Required(ErrorMessage = "DateModified is required")]
-        public DateTime DateModified { get; set; }
+        public DateTime? DateModified { get; set; }
     }
 }

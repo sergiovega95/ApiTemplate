@@ -6,6 +6,6 @@ namespace Iris.Domain.DTOs.Tasks
 {
     public class TaskRequest
     {
-
+        public string TaskDescription { get; set; }
     }
 }

@@ -20,10 +20,12 @@ namespace ApiTemplate.Infraestructure.Repositories
         public async Task AddAsync (T entity)
         {
             await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
         public async Task AddRangeAsync (IEnumerable<T> entities)
         {
             await _context.Set<T>().AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
         }
         public async Task<IEnumerable<T>> FindAsync (Expression<Func<T, bool>> expression)
         {
@@ -37,24 +39,23 @@ namespace ApiTemplate.Infraestructure.Repositories
         {
             return await _context.Set<T>().FindAsync(id);
         }
-        public void Remove(T entity)
+        public async Task RemoveAsync(T entity)
         {
-            _context.Set<T>().Remove(entity);            
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
         }
-        public void  RemoveRange(IEnumerable<T> entities)
+        public async Task RemoveRangeAsync(IEnumerable<T> entities)
         {
-            _context.Set<T>().RemoveRange(entities);            
+            _context.Set<T>().RemoveRange(entities);
+            await _context.SaveChangesAsync();
         }        
 
-        public void Update(T entity)
+        public async Task UpdateAsync(T entity)
         {
             _context.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
-        }
-
-        public async Task SaveChangesAsync()
-        {
             await _context.SaveChangesAsync();
-        }
+        }      
+       
     }
 }
