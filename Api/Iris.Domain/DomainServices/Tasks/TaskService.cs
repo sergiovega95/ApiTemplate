@@ -34,7 +34,7 @@ namespace Iris.Domain.DomainServices.Tasks
 
             Entities.Task task = await _repository.GetByIdAsync(taskId);
 
-            if (task.Equals(null)) {
+            if (task is null) {
 
                 throw new BusinessException($"TaskId {taskId} not found");
             }
@@ -57,7 +57,7 @@ namespace Iris.Domain.DomainServices.Tasks
 
             Entities.Task task = await _repository.GetByIdAsync(taskUpdate.TaskId);
 
-            if (task.Equals(null))
+            if (task is null)
             {
                 throw new BusinessException($"TaskId {taskUpdate.TaskId} not found");
             }

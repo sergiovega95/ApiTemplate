@@ -1,5 +1,6 @@
 ﻿using ApiTemplate.Api.ViewModels;
 using FluentValidation;
+using Iris.Api.ViewModels.Responses;
 using Iris.Domain.DomainServices.Tasks;
 using Iris.Domain.DTOs.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -31,16 +32,18 @@ namespace Iris.Api.Controllers
 
         // GET: api/<TaskController>
         [HttpGet]
+        [ProducesResponseType(typeof(GenericResponse), StatusCodes.Status200OK, contentType: "application/json")]        
+        [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError, contentType: "application/json")]
         public async Task <IActionResult> GetAllTasks()
         {
             _logger.LogTrace("Gettings all tasks");
 
-            return Ok(await _taskService.GetAllTask());
+            return Ok(new GenericResponse() { StatusCode = 200, Data = await _taskService.GetAllTask() });
         }       
 
         // POST api/<TaskController>
         [HttpPost]
-        [ProducesResponseType(typeof(int), StatusCodes.Status200OK, contentType: "application/json")]
+        [ProducesResponseType(typeof(GenericResponse), StatusCodes.Status200OK, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status400BadRequest, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError, contentType: "application/json")]
         public async Task <IActionResult> Post ([FromBody] TaskRequest task)
@@ -49,13 +52,13 @@ namespace Iris.Api.Controllers
 
             await _validatorTaskRequest.ValidateAndThrowAsync(task);
 
-            return Ok(await _taskService.CreateTask(task));
+            return Ok(new GenericResponse() { StatusCode = 200, Data = new { taskId = await _taskService.CreateTask(task)}});                    
 
         }
 
         // PUT api/<TaskController>
         [HttpPut]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK, contentType: "application/json")]
+        [ProducesResponseType(typeof(GenericResponse), StatusCodes.Status200OK, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status400BadRequest, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError, contentType: "application/json")]
         public async Task<IActionResult> Put([FromBody] TaskDto taskUpdated)
@@ -66,12 +69,13 @@ namespace Iris.Api.Controllers
 
             await _taskService.UpdateTask(taskUpdated);
 
-            return Ok();
+            return Ok(new GenericResponse() { StatusCode = 200 , Data = new { taskIdUpdated = taskUpdated.TaskId } });
 
         }
 
-        // DELETE api/<TaskController>/5
-        [HttpDelete("{id}")]        
+        // DELETE api/<TaskController>/{id}
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(GenericResponse), StatusCodes.Status200OK, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status400BadRequest, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError, contentType: "application/json")]
         public async Task<IActionResult> Delete(int id)
@@ -80,7 +84,7 @@ namespace Iris.Api.Controllers
 
             await _taskService.DeleteTask(id);
 
-            return Ok();
+            return Ok(new GenericResponse() { StatusCode = 200 , Data = new { taskIdDeleted = id }});
         }
     }
 }

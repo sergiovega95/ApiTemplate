@@ -17,6 +17,7 @@ using Iris.Api.ViewModels.Validations;
 using Iris.Domain.DTOs.Tasks;
 using Iris.Domain.DomainServices.Tasks;
 
+
 //Create Loggger and store in amazon S3
 Log.Logger = new LoggerConfiguration()
     .WriteTo.AmazonS3(
@@ -49,7 +50,6 @@ builder.Services.AddScoped<IValidator<UserDTO>, UserDtoValidator>();
 builder.Services.AddScoped<IValidator<TaskDto>, TaskDtoValidator>();
 builder.Services.AddScoped<IValidator<TaskRequest>, TaskRequestValidator>();
 builder.Services.AddScoped<ITaskService, TaskService>();
-
 builder.Host.UseSerilog();
 builder.Services.AddAuthentication(options =>
 {
@@ -71,6 +71,15 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "MyAllowSpecificOrigins",
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin();
+                      });
+});
+
 
 var app = builder.Build();
 
@@ -88,6 +97,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+//Global Exception Handler
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.Run();

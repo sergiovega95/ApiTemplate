@@ -1,13 +1,12 @@
-﻿using ApiTemplate.Api.Controllers;
-using ApiTemplate.Api.ViewModels;
+﻿using ApiTemplate.Api.ViewModels;
 using ApiTemplate.Domain.Exceptions;
 using FluentValidation;
 using Newtonsoft.Json;
 using System.Net;
-using System.Runtime.Intrinsics.X86;
 
 namespace ApiTemplate.Api.Middlewares
 {
+    //Global Exception Handler
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
@@ -27,6 +26,11 @@ namespace ApiTemplate.Api.Middlewares
             {
                 _logger.LogError($"Validation Model Exception: {ex}");
                 await HandleExceptionAsync(httpContext, HttpStatusCode.BadRequest,string.Join(',',ex.Errors.Select(s=>s.ErrorMessage).ToList()));
+            }
+            catch (BusinessException ex)
+            {
+                _logger.LogError($"Bussiness Exception: {ex}");
+                await HandleExceptionAsync(httpContext, HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
