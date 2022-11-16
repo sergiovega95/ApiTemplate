@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Shared\" />
   </ItemGroup>

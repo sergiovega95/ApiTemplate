@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using FluentValidation;
 using FluentValidation.Results;
+using ApiTemplate.Api.ViewModels;
 
 namespace ApiTemplate.Api.Controllers
 {
@@ -26,7 +27,15 @@ namespace ApiTemplate.Api.Controllers
             _validator = validator;
         }
 
+        /// <summary>
+        /// Get JWT TOKEN
+        /// </summary>
+        /// <param name="user">User info identification</param>
+        /// <returns>JWT Token</returns>
         [HttpPost("token")]
+        [ProducesResponseType(typeof(string),StatusCodes.Status200OK,contentType:"application/json")]
+        [ProducesResponseType(typeof(ErrorDetails),StatusCodes.Status400BadRequest, contentType: "application/json")]
+        [ProducesResponseType(typeof(ErrorDetails),StatusCodes.Status500InternalServerError, contentType: "application/json")]
         public async Task<IActionResult> GetAuthToken([FromBody] UserDTO user) {
             
             await _validator.ValidateAndThrowAsync(user);            

@@ -11,6 +11,8 @@ using ApiTemplate.Api.Middlewares;
 using FluentValidation;
 using ApiTemplate.Api.ViewModels.Validations;
 using ApiTemplate.Domain.DTOs.Authentication;
+using ApiTemplate.Domain.Interfaces;
+using ApiTemplate.Infraestructure.Repositories;
 
 //Create Loggger
 Log.Logger = new LoggerConfiguration()
@@ -37,6 +39,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnectionString")));
+builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IValidator<UserDTO>, UserDtoValidator>();
 builder.Host.UseSerilog();
