@@ -18,24 +18,25 @@ using Iris.Domain.DTOs.Tasks;
 using Iris.Domain.DomainServices.Tasks;
 
 
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEnvironmentVariables();
+
 //Create Loggger and store in amazon S3
 Log.Logger = new LoggerConfiguration()
     .WriteTo.AmazonS3(
         $"logBackend-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}.txt",
         "logsirisexam",
         Amazon.RegionEndpoint.USEast1,
-        "AKIAT6BAPMNIYKXHIP5W",
-        "YPKAZg+7JUvpGyab1v54P9ZW4uN1hJFwLNtX1VR5",
+        builder.Configuration.GetSection("awsCredentials:awsAccessKeyId").Value,
+        builder.Configuration.GetSection("awsCredentials:awsSecretAccessKey").Value,
         restrictedToMinimumLevel: LogEventLevel.Error,
         outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
         new CultureInfo("es-CO"),
         levelSwitch: null,
         rollingInterval: Serilog.Sinks.AmazonS3.RollingInterval.Day,
         encoding: Encoding.Unicode)
-    .CreateLogger();    
-
-var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddEnvironmentVariables();
+    .CreateLogger();
 
 
 // Add services to the container.
