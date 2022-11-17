@@ -1,7 +1,16 @@
 <div class="wrapper">
     <header>To do List</header>
+     
     <div class="inputField">
-      <input type="text" (keyup)="inputKeyup(taskDescription.value)" id="taskDescription" name="taskDescription" placeholder="Add your new task" #taskDescription>
+    <select id="categorySelect" class="form-select" aria-label="Default select example">      
+      <option selected value="All">All</option>
+      <option value="Home">Home</option>
+      <option value="Job">Job</option>
+    </select>
+  </div>
+
+    <div class="inputField">
+      <input type="text" (keyup)="inputKeyupEvent(taskDescription.value)" id="taskDescription" name="taskDescription" placeholder="Add your new task" #taskDescription>
       <button *ngIf="!updateMode" id="addBtn" type="button" (click)="addTask(taskDescription.value)"><i class="fa-plus"></i></button>
       <button class="active" *ngIf="updateMode" id="editBtn" type="button" (click)="updateTask(taskDescription.value)"><i title="Save Edit" class="fa-solid fa-floppy-disk"></i></button>
     </div>

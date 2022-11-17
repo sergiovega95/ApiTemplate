@@ -31,6 +31,10 @@ namespace Iris.Api.Controllers
         }
 
         // GET: api/<TaskController>
+        /// <summary>
+        /// Get all tasks
+        /// </summary>
+        /// <returns>List of Tasks</returns>
         [HttpGet]
         [ProducesResponseType(typeof(GenericResponse), StatusCodes.Status200OK, contentType: "application/json")]        
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status500InternalServerError, contentType: "application/json")]
@@ -42,6 +46,11 @@ namespace Iris.Api.Controllers
         }       
 
         // POST api/<TaskController>
+        /// <summary>
+        /// Create a new task
+        /// </summary>
+        /// <param name="task">Task information</param>
+        /// <returns>Task created</returns>
         [HttpPost]
         [ProducesResponseType(typeof(GenericResponse), StatusCodes.Status200OK, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status400BadRequest, contentType: "application/json")]
@@ -57,6 +66,11 @@ namespace Iris.Api.Controllers
         }
 
         // PUT api/<TaskController>
+        /// <summary>
+        /// Update Task
+        /// </summary>
+        /// <param name="taskUpdated">Update Task Information</param>
+        /// <returns>Updated Task</returns>
         [HttpPut]
         [ProducesResponseType(typeof(GenericResponse), StatusCodes.Status200OK, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status400BadRequest, contentType: "application/json")]
@@ -74,6 +88,11 @@ namespace Iris.Api.Controllers
         }
 
         // DELETE api/<TaskController>/{id}
+        /// <summary>
+        /// Delete a Task
+        /// </summary>
+        /// <param name="id">TaskId for delete task</param>
+        /// <returns>Task Deleted</returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(GenericResponse), StatusCodes.Status200OK, contentType: "application/json")]
         [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status400BadRequest, contentType: "application/json")]

@@ -63,6 +63,7 @@ namespace Iris.Domain.DomainServices.Tasks
             }
 
             task.TaskDescription = taskUpdate.TaskDescription;
+            task.DateModified = DateTime.Now.AddHours(-5);
 
             await _repository.UpdateAsync(task);
         }

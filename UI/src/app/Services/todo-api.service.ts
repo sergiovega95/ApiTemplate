@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Task } from '../Interfaces/Task';
 import { GetAllTaskResponse } from '../Interfaces/GetAllTaskResponse';
+import { AddTaskResponse } from '../Interfaces/addTaskResponse';
+import { DeleteTaskResponse } from '../Interfaces/deleteTaskResponse';
+import { UpdateTaskResponse } from '../Interfaces/UpdateTaskResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -38,12 +40,12 @@ export class TodoApiService {
     return request;
   }
 
-  CreateTask(taskDescription: string): Observable<any> {
+  CreateTask(taskDescription: string): Observable<AddTaskResponse> {
     const body = {
       taskDescription: taskDescription,
     };
 
-    const request = this.httpClient.post(`${this.baseURL}/api/Task`, body, {
+    const request = this.httpClient.post<AddTaskResponse>(`${this.baseURL}/api/Task`, body, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
       }),
@@ -52,8 +54,8 @@ export class TodoApiService {
     return request;
   }
 
-  DeleTask(taskId: number): Observable<any> {
-    const request = this.httpClient.delete(
+  DeleTask(taskId: number): Observable<DeleteTaskResponse> {
+    const request = this.httpClient.delete<DeleteTaskResponse>(
       `${this.baseURL}/api/Task/${taskId}`,
       {
         headers: new HttpHeaders({
@@ -65,13 +67,13 @@ export class TodoApiService {
     return request;
   }
 
-  UpdateTask(taskDescription: string, taskId: number): Observable<any> {
+  UpdateTask(taskDescription: string, taskId: number): Observable<UpdateTaskResponse> {
     const body = {
       taskDescription: taskDescription,
       taskId: taskId,
     };
 
-    const request = this.httpClient.put(`${this.baseURL}/api/Task`, body, {
+    const request = this.httpClient.put<UpdateTaskResponse>(`${this.baseURL}/api/Task`, body, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
       }),

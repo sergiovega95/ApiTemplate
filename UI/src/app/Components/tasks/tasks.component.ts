@@ -2,6 +2,9 @@ import { TodoApiService } from 'src/app/Services/todo-api.service';
 import { Component, OnInit } from '@angular/core';
 import { Task } from 'src/app/Interfaces/Task';
 import { GetAllTaskResponse } from 'src/app/Interfaces/GetAllTaskResponse';
+import { AddTaskResponse } from 'src/app/Interfaces/addTaskResponse';
+import { DeleteTaskResponse } from 'src/app/Interfaces/deleteTaskResponse';
+import { UpdateTaskResponse } from 'src/app/Interfaces/UpdateTaskResponse';
 
 @Component({
   selector: 'app-tasks',
@@ -22,10 +25,10 @@ export class TasksComponent implements OnInit {
         localStorage.setItem('jwt', data);
       });
 
-    this.GetAllTask();
+    this.getAllTask();
   }
 
-  GetAllTask() {
+  getAllTask() {
     this.todoservice.GetAllTask().subscribe((response: GetAllTaskResponse) => {      
       this.tasks = response.data;
     });
@@ -34,8 +37,8 @@ export class TasksComponent implements OnInit {
   addTask(taskDescription: string) {
     let userEnteredValue = taskDescription;
 
-    this.todoservice.CreateTask(userEnteredValue).subscribe((respose: any) => {
-      this.GetAllTask();
+    this.todoservice.CreateTask(userEnteredValue).subscribe((respose: AddTaskResponse) => {
+      this.getAllTask();
     });
 
     const input = document.getElementById(
@@ -43,11 +46,17 @@ export class TasksComponent implements OnInit {
     ) as HTMLInputElement;
 
     input.value = '';
+
+    const selectbox = document.getElementById(
+      'categorySelect'
+    ) as HTMLInputElement;
+
+    selectbox.value = 'All';
   }
 
   deleteTask(taskId: number) {
-    this.todoservice.DeleTask(taskId).subscribe((respose: any) => {
-      this.GetAllTask();
+    this.todoservice.DeleTask(taskId).subscribe((respose: DeleteTaskResponse) => {
+      this.getAllTask();
     });
   }
 
@@ -66,8 +75,8 @@ export class TasksComponent implements OnInit {
   updateTask(taskDescription: string) {
     this.todoservice
       .UpdateTask(taskDescription, this.taskIdUpdated)
-      .subscribe((respose: any) => {
-        this.GetAllTask();
+      .subscribe((respose: UpdateTaskResponse) => {
+        this.getAllTask();
       });
 
     this.taskIdUpdated = 0;
@@ -81,7 +90,7 @@ export class TasksComponent implements OnInit {
     input.value = '';
   }
 
-  inputKeyup(taskDescription: string) {
+  inputKeyupEvent(taskDescription: string) {
     let userEnteredValue = taskDescription;    
    
     userEnteredValue.trim().length === 0
