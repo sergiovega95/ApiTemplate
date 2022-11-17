@@ -6,6 +6,6 @@
     </div>
     <ul class="todoList"> 
       <div *ngIf="tasks.length == 0">No existen tareas.</div>     
-      <li *ngFor="let task of tasks"><input type="checkbox">{{task.taskDescription}}> <span class="icon" (click)='deleteTask(task.taskId)'><i class="fa fa-trash"></i></span></li>
+      <li *ngFor="let task of tasks"><input type="checkbox">{{task.taskDescription}}<span class="icon" (click)='deleteTask(task.taskId)'><i class="fa fa-trash"></i></span></li>
     </ul>   
   </div>
