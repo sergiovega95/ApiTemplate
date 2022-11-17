@@ -78,6 +78,8 @@ builder.Services.AddCors(options =>
                       policy =>
                       {
                           policy.AllowAnyOrigin();
+                          policy.AllowAnyHeader();
+                          policy.AllowAnyMethod();
                       });
 });
 
@@ -100,5 +102,7 @@ app.MapControllers();
 
 //Global Exception Handler
 app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseCors("MyAllowSpecificOrigins");
 
 app.Run();
