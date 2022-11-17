@@ -31,8 +31,8 @@ Abra la carpeta y ejecute el comando `ng serve` para crear un servidor de desarr
 .Cuenta con swagger UI alojado en `https://ztj7tcjien.us-east-1.awsapprunner.com/swagger/index.html`
 
 ## Anotaciones
-El proyecto de backend utiliza una base de datos sql, la cual esta alojada remotamente en un servidor privado,
-esto con el fin de facilitar la revisión del examen y evitar la creación de bases de datos.
+El proyecto de backend utiliza una base de datos sqly, la cual esta alojada remotamente en un servidor privado,
+esto con el fin de facilitar la revisión del examen y evitar la creación de bases de datos, ademas de algunos servicios de aws como lo es S3, por lo tanto se expone información sensible en archivos de configuración para facilitar la rapida debuggeo de la prueba por parte del equipo de desarrollo de iris, pero no se recomienda en ambientes productivos o situaciones realizar esta practica y mejor usar herramientas de adminsitración de configuración esto solo se realiza con fines del examen.
 
 ## Live server
 El proyecto backend se encuentra desplegado en una instancia de apprunner de amazon en el siguiente enlace
