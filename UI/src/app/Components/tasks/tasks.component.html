@@ -1,0 +1,14 @@
+<div class="wrapper">
+    <header>To do List</header>
+    <div class="inputField">
+      <input type="text" (keyup)="inputKeyup(taskDescription.value)" id="taskDescription" name="taskDescription" placeholder="Add your new task" #taskDescription>
+      <button id="addBtn" type="button" (click)="addTask(taskDescription.value)"><i class="fa-plus"></i></button>
+    </div>
+    <ul class="todoList">
+      <!-- data are comes from local storage -->
+    </ul>
+    <div class="footer">
+      <span>You have <span class="pendingTasks"></span> pending tasks</span>
+      <button id="clearbtn">Clear All</button>     
+    </div>
+  </div>
