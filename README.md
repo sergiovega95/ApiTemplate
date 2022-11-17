@@ -7,7 +7,8 @@ Este Repositorio Cuenta con dos proyectos :
 ## 1) Proyecto Frontend (todo app)
 
   - Alojado en el directorio UI de la raiz del repositorio
-  - Esta es una app realizada en angular 1  
+  - Esta es una app realizada en angular 12 
+  - Aunque en la imagen de referencia del ejercicio no se mostraba claramente, se agregó la funcionalidad de edición de tareas. 
 
 ## Live server
 El proyecto frontend se encuentra desplegado en un bucket de amazon S3 como sitio estatico `http://angular-iris.s3-website-us-east-1.amazonaws.com/` y conectado al backend correspondiente.
