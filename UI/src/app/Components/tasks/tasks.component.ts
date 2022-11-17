@@ -10,6 +10,8 @@ import { GetAllTaskResponse } from 'src/app/Interfaces/GetAllTaskResponse';
 })
 export class TasksComponent implements OnInit {
   tasks: Task[] = [];
+  updateMode: boolean = false;
+  taskIdUpdated: number = 0; 
 
   constructor(private todoservice: TodoApiService) {}
 
@@ -24,8 +26,7 @@ export class TasksComponent implements OnInit {
   }
 
   GetAllTask() {
-    this.todoservice.GetAllTask().subscribe((response: GetAllTaskResponse) => {
-      console.log(response);
+    this.todoservice.GetAllTask().subscribe((response: GetAllTaskResponse) => {      
       this.tasks = response.data;
     });
   }
@@ -50,8 +51,42 @@ export class TasksComponent implements OnInit {
     });
   }
 
+  setUpdateMode(taskId: number, taskDescription: string) {
+    
+    this.taskIdUpdated = taskId;
+    this.updateMode = true;     
+        
+    const input = document.getElementById(
+      'taskDescription'
+    ) as HTMLInputElement;
+
+    input.value = taskDescription;
+  }
+
+  updateTask(taskDescription: string) {
+    this.todoservice
+      .UpdateTask(taskDescription, this.taskIdUpdated)
+      .subscribe((respose: any) => {
+        this.GetAllTask();
+      });
+
+    this.taskIdUpdated = 0;
+    this.updateMode = false;    
+
+    document.getElementById('editBtn')?.classList.remove('active');
+    const input = document.getElementById(
+      'taskDescription'
+    ) as HTMLInputElement;
+
+    input.value = '';
+  }
+
   inputKeyup(taskDescription: string) {
-    let userEnteredValue = taskDescription;
+    let userEnteredValue = taskDescription;    
+   
+    userEnteredValue.trim().length === 0
+      ? document.getElementById('editBtn')?.classList.remove('active')
+      : document.getElementById('editBtn')?.classList.add('active');    
 
     userEnteredValue.trim().length === 0
       ? document.getElementById('addBtn')?.classList.remove('active')

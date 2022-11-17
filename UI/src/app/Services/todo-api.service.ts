@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Task } from '../Interfaces/Task';
-import {GetAllTaskResponse} from '../Interfaces/GetAllTaskResponse';
+import { GetAllTaskResponse } from '../Interfaces/GetAllTaskResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,14 @@ export class TodoApiService {
   }
 
   GetAllTask(): Observable<GetAllTaskResponse> {
-    const request = this.httpClient.get<GetAllTaskResponse>(`${this.baseURL}/api/Task`,{headers:new HttpHeaders({'Authorization':`Bearer ${localStorage.getItem('jwt')}`})});
+    const request = this.httpClient.get<GetAllTaskResponse>(
+      `${this.baseURL}/api/Task`,
+      {
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        }),
+      }
+    );
     return request;
   }
 
@@ -36,7 +43,11 @@ export class TodoApiService {
       taskDescription: taskDescription,
     };
 
-    const request = this.httpClient.post(`${this.baseURL}/api/Task`, body,{headers:new HttpHeaders({'Authorization':`Bearer ${localStorage.getItem('jwt')}`})});
+    const request = this.httpClient.post(`${this.baseURL}/api/Task`, body, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      }),
+    });
 
     return request;
   }
@@ -44,8 +55,27 @@ export class TodoApiService {
   DeleTask(taskId: number): Observable<any> {
     const request = this.httpClient.delete(
       `${this.baseURL}/api/Task/${taskId}`,
-      {headers:new HttpHeaders({'Authorization':`Bearer ${localStorage.getItem('jwt')}`})}
+      {
+        headers: new HttpHeaders({
+          Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        }),
+      }
     );
+
+    return request;
+  }
+
+  UpdateTask(taskDescription: string, taskId: number): Observable<any> {
+    const body = {
+      taskDescription: taskDescription,
+      taskId: taskId,
+    };
+
+    const request = this.httpClient.put(`${this.baseURL}/api/Task`, body, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      }),
+    });
 
     return request;
   }
