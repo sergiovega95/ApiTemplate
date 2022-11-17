@@ -4,11 +4,8 @@
       <input type="text" (keyup)="inputKeyup(taskDescription.value)" id="taskDescription" name="taskDescription" placeholder="Add your new task" #taskDescription>
       <button id="addBtn" type="button" (click)="addTask(taskDescription.value)"><i class="fa-plus"></i></button>
     </div>
-    <ul class="todoList">      
-      <li *ngFor="let task of tasks">{{task.taskDescription}}<span class="icon" (click)="deleteTask()"><i class="fas fa-trash"></i></span></li>
-    </ul>
-    <div class="footer">
-      <span>You have <span class="pendingTasks"></span> pending tasks</span>
-      <button id="clearbtn">Clear All</button>     
-    </div>
+    <ul class="todoList"> 
+      <div *ngIf="tasks.length == 0">No existen tareas.</div>     
+      <li *ngFor="let task of tasks"><input type="checkbox">{{task.taskDescription}}> <span class="icon" (click)='deleteTask(task.taskId)'><i class="fa fa-trash"></i></span></li>
+    </ul>   
   </div>

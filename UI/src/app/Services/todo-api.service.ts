@@ -8,7 +8,7 @@ import {GetAllTaskResponse} from '../Interfaces/GetAllTaskResponse';
   providedIn: 'root',
 })
 export class TodoApiService {
-  private baseURL: string = 'https://localhost:44373';
+  private baseURL: string = 'https://ztj7tcjien.us-east-1.awsapprunner.com';
 
   constructor(private httpClient: HttpClient) {}
 

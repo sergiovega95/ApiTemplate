@@ -20,20 +20,34 @@ export class TasksComponent implements OnInit {
         localStorage.setItem('jwt', data);
       });
 
+    this.GetAllTask();
+  }
+
+  GetAllTask() {
     this.todoservice.GetAllTask().subscribe((response: GetAllTaskResponse) => {
+      console.log(response);
       this.tasks = response.data;
-      console.log(this.tasks);
     });
   }
 
   addTask(taskDescription: string) {
     let userEnteredValue = taskDescription;
-    document.getElementById('clearbtn')?.classList.add('active');
-    this.todoservice.CreateTask(userEnteredValue);
+
+    this.todoservice.CreateTask(userEnteredValue).subscribe((respose: any) => {
+      this.GetAllTask();
+    });
+
+    const input = document.getElementById(
+      'taskDescription'
+    ) as HTMLInputElement;
+
+    input.value = '';
   }
 
-  deleteTask(){
-    
+  deleteTask(taskId: number) {
+    this.todoservice.DeleTask(taskId).subscribe((respose: any) => {
+      this.GetAllTask();
+    });
   }
 
   inputKeyup(taskDescription: string) {
